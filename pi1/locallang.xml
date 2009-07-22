@@ -6,6 +6,7 @@
 	</meta>
 	<data type='array'>
 		<languageKey index='default' type='array'>
+			<label index='no_jobs_found'>No jobs were found</label>
 			<label index='apply_header'>Fill in the form to apply online</label>
 			<label index='apply_label'>Apply</label>
 			<label index='apply_link'>Apply online</label>
@@ -53,6 +54,7 @@
 			<label index='apply_missing_fields'>One or more required fields are missing:</label>
 		</languageKey>
 		<languageKey index='nl' type='array'>
+			<label index='no_jobs_found'>Er zijn geen vacatures gevonden</label>
 			<label index='apply_header'>Vul uw gegevens in om direct te solliciteren</label>
 			<label index='apply_label'>Solliciteren</label>
 			<label index='apply_link'>Direct solliciteren</label>
@@ -100,6 +102,7 @@
 			<label index='apply_missing_fields'>Een of meerdere verplichte velden zijn niet ingevuld:</label>
 		</languageKey>
 		<languageKey index='de' type='array'>
+			<label index='no_jobs_found'>No jobs were found</label>
 			<label index='apply_header'>Zur Online-Bewerbung bitte Formular ausf&amp;uuml;llen</label>
 			<label index='apply_label'>Bewerben</label>
 			<label index='apply_link'>Online Bewerben</label>
@@ -147,6 +150,7 @@
 			<label index='apply_missing_fields'>One or more required fields are missing:</label>
 		</languageKey>
 		<languageKey index='ru' type='array'>
+			<label index='no_jobs_found'>No jobs were found</label>
 			<label index='apply_header'>Заполните форму, чтобу подать заявку онлайн</label>
 			<label index='apply_label'>Обратиться</label>
 			<label index='apply_link'>Обратиться онлайн</label>

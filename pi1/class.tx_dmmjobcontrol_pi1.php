@@ -288,7 +288,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$i = 0;
 		$content = '';
 
-		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			// Language overlay
 			if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
 				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
@@ -303,6 +303,10 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 				$content .= $this->cObj->substituteMarkerArrayCached($template['row'], $markerArray);
 			}
 			$i++;
+		}
+
+		if (!$content) {
+			$content = $this->pi_getLL('no_jobs_found');
 		}
 
 		$markerArray = $this->getLabels();
@@ -365,7 +369,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 				$jobData = $this->getJobData($row);
 
 				if (isset($this->conf['hide_empty']) && $this->conf['hide_empty']) {
-					$markerArray = $this->hideEmpty($labels, $jobData);
+					$markerArray = $this->hideEmpty($labels, $jobData, $row);
 				} else {
 					$markerArray = $labels + $jobData;
 				}
@@ -833,7 +837,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 			'###CRDATE###' => $this->cObj->stdWrap($row['crdate'], $this->conf['crdate_stdWrap.']),
 			'###REFERENCE###' => $this->cObj->stdWrap($row['reference'], $this->conf['reference_stdWrap.']),
 			'###JOB_TITLE###' => $this->cObj->stdWrap($row['job_title'], $this->conf['job_title_stdWrap.']),
-			'###EMPLOYER###' => $this->cObj->stdWrap($row['employer'], $this->conf['employet_stdWrap.']),
+			'###EMPLOYER###' => $this->cObj->stdWrap($row['employer'], $this->conf['employer_stdWrap.']),
 			'###EMPLOYER_DESCRIPTION###' => $this->cObj->stdWrap($row['employer_description'], $this->conf['employer_description_stdWrap.']),
 			'###LOCATION###' => $this->cObj->stdWrap($row['location'], $this->conf['location_stdWrap.']),
 			'###SHORT_JOB_DESCRIPTION###' => $this->cObj->stdWrap($row['short_job_description'], $this->conf['short_job_description_stdWrap.']),
@@ -1013,7 +1017,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 	 * @param array $values The array holding the job data marker array
 	 * @return array The combined markerArray that will be inserted into the detail template
 	 */
-	function hideEmpty($labels, $values) {
+	function hideEmpty($labels, $values, $row) {
 		$markerArray = array();
 
 		// Relate labels and values
@@ -1049,10 +1053,12 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 				$fieldName_parts = explode('_', $field);
 				array_pop($fieldName_parts);
 				$fieldName = implode('_', $fieldName_parts);
+				$rowFieldName = strtolower($fieldName);
 
-				// if it empty fill label with a space
-				if (empty($values['###'.$fieldName.'###'])) {
+				// if it is empty fill label with a space
+				if (empty($row[$rowFieldName])) {
 					$labels[$k] = ' ';
+					$values['###'.$fieldName.'###'] = '';
 				}
 			}
 		}

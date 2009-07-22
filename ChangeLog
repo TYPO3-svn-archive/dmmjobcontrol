@@ -1,3 +1,9 @@
+2008-10-30 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
+	* Version 1.15.6
+	* Feature: a message will now be shown when no jobs are found (thanks Jan Wolters)
+	* Bugfix: typo: employet_stdWrap renamed to employer_stdWrap (thanks Marcel Greter)
+	* Bugfix: hideEmpty did not really work when you supplied your own wrappings (fields were never empty) (thanks Marcel Greter)
+
 2008-09-29 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
 	* Version 1.15.5
 	* Bugfix: SQL injection vulnerability fixed
