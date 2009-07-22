@@ -68,7 +68,8 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 
 		// Load the complete TCA array into the global var $TCA, so we can find out what type a certain field is etc.
 		// This will also include the config of user-created fields in extending plugins
-		$GLOBALS['TSFE']->includeTCA('tx_dmmjobcontrol_job');
+		$GLOBALS['TSFE']->includeTCA();
+		t3lib_div::loadTCA('tx_dmmjobcontrol_job');
 
 		// Load the language-labels from locallang_db.xml, so we can actually get the values from a selectbox.
 		// Otherwise we would just see "1" instead of "fulltime" as a value. Sometimes TYPO3 is too complicated ;)

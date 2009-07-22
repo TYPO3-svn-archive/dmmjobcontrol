@@ -1,3 +1,7 @@
+2009-01-29 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
+	* Version 2.3.1
+	* Bugfix: in rare situations, the selectboxes on the searchform could be empty (thanks Gaylord Grštzinger)
+
 2009-01-23 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 	* Version 2.3.0
 	* Feature: in the TypoScript code you can now use the new config option "whereadd".
