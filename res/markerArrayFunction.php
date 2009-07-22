@@ -4,10 +4,8 @@
  * Example function for extending the detail view of the JobControl plugin with extra markers.
  * See manual for info on how to use this file.
  *
- *
  * In these examples, replace jobcontrolextension by the extension key you've chosen in the kickstarter.
  * If in one of these examples it is prefixed with tx_, you should keep that prefix as well.
- *
  *
  * @param array $markerArray The original markerArray
  * @param array $conf Contains 2 important elements, with keys row and parant. See example code below.

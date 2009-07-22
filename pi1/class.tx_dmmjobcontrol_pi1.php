@@ -67,7 +67,8 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$GLOBALS['TSFE']->set_no_cache();
 
 		// Load the complete TCA array into the global var $TCA, so we can find out what type a certain field is etc.
-		t3lib_div::loadTCA('tx_dmmjobcontrol_job');
+		// This will also include the config of user-created fields in extending plugins
+		$GLOBALS['TSFE']->includeTCA('tx_dmmjobcontrol_job');
 
 		// Load the language-labels from locallang_db.xml, so we can actually get the values from a selectbox.
 		// Otherwise we would just see "1" instead of "fulltime" as a value. Sometimes TYPO3 is too complicated ;)
@@ -223,7 +224,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		// Extra whereadd statement depending on localization
 		if ($this->sys_language_mode == 'strict' && $GLOBALS['TSFE']->sys_language_content) {
 			// sys_language_mode == 'strict': only get jobs entered in the default language *which have a translation *
-
 			$tmpres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('l18n_parent', 'tx_dmmjobcontrol_job', $this->whereAdd.' AND sys_language_uid='.$GLOBALS['TSFE']->sys_language_content);
 
 			$strictUids = array();
@@ -269,6 +269,11 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 					}
 				}
 			}
+		}
+
+		// Is there an extra whereAdd given in the TypoScript code?
+		if (isset($this->conf['whereadd']) && $this->conf['whereadd']) {
+			$whereAdd[] = $this->conf['whereadd'];
 		}
 
 		// Set limit on query
@@ -713,6 +718,14 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$markerArray['###KEYWORD_VALUE###'] = $session['search']['keyword'];
 		$markerArray['###KEYWORD_NAME###'] = 'tx_dmmjobcontrol_pi1[search][keyword]';
 
+		// Extend the markerArray with user function?
+		if (isset($this->conf['searchArrayFunction']) && $this->conf['searchArrayFunction']) {
+			$funcConf = $this->conf['searchArrayFunction.'];
+			$funcConf['parent'] = & $this;
+			$funcConf['row'] = $row;
+			$markerArray = $this->cObj->callUserFunction($this->conf['searchArrayFunction'], $funcConf, $markerArray);
+		}
+
 		return $markerArray;
 	}
 
@@ -816,7 +829,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 
 		if (isset($TCA['tx_dmmjobcontrol_job']['columns'][$field]['config']['MM'])) {
 			// The values for the select come from another table
-
 			$whereAdd = 'pid IN ('.implode(',', $this->sysfolders).')';
 			$whereAddLang = ' AND sys_language_uid='.$GLOBALS['TSFE']->sys_language_content;
 
@@ -972,7 +984,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 				$markerArray['###'.strtoupper('contact_'.$f).'###'] = $this->cObj->stdWrap($rowMM[$f], $this->conf['contact_'.$f.'_stdWrap.']);
 			}
 		}
-		
+
 		return $markerArray;
 	}
 

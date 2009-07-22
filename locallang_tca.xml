@@ -24,5 +24,10 @@
 			<label index="dmmjobcontrol.pi_flexform.sheet_general">Allgemeine Einstellungen</label>
 			<label index="dmmjobcontrol.pi_flexform.what_to_display">Was anzeigen:</label>
 		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="dmmjobcontrol">JobControl</label>
+			<label index="dmmjobcontrol.pi_flexform.sheet_general">Ustawienia ogólne</label>
+			<label index="dmmjobcontrol.pi_flexform.what_to_display">Co wyświetlać:</label>
+		</languageKey>
 	</data>
 </T3locallang>

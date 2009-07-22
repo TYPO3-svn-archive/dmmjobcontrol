@@ -213,5 +213,57 @@
 			<label index='contact_phone_label'>Contact phone</label>
 			<label index='contact_email_label'>Contact email</label>
 		</languageKey>
+		<languageKey index="pl" type="array">
+			<label index="no_jobs_found">Nie znaleziono żadnych ofert pracy</label>
+			<label index="apply_header">Wypełnij formularz aby aplikować on-line</label>
+			<label index="apply_label">Aplikuj</label>
+			<label index="apply_link">Aplikuj on-line</label>
+			<label index="fullname_label">Nazwisko</label>
+			<label index="email_label">Adres e-mail</label>
+			<label index="motivation_label">List motywacyjny</label>
+			<label index="apply_email_subject">Aplikacja na stanowisko pracy:</label>
+			<label index="apply_thanks">Dziękujemy za przesłanie zgłoszenia. Skontaktujemy się z Tobą wkrótce.</label>
+			<label index="wrong_document_type">Ten typ pliku jest niedozwolony. Możesz dołączyć jedynie dokumenty tekstowe.</label>
+			<label index="cv_label">Załaduj swoje CV</label>
+			<label index="letter_label">Załaduj swój list motywacyjny</label>
+			<label index="crdate_label">Dodane</label>
+			<label index="reference_label">Numer referencyjny</label>
+			<label index="job_title_label">Stanowisko</label>
+			<label index="employer_label">Zatrudniający</label>
+			<label index="employer_description_label">Opis pracodawcy</label>
+			<label index="location_label">Lokalizacja</label>
+			<label index="short_job_description_label">Krótki opis stanowiska</label>
+			<label index="job_description_label">Opis wymagań</label>
+			<label index="experience_label">Doświadczenie</label>
+			<label index="job_requirements_label">Wymogi</label>
+			<label index="job_benefits_label">Zyskujesz</label>
+			<label index="apply_information_label">Informacje dodatkowe</label>
+			<label index="salary_label">Wynagrodzenie</label>
+			<label index="job_type_label">Typ pracy</label>
+			<label index="contract_type_label">Typ kontraktu</label>
+			<label index="region_label">Region</label>
+			<label index="sector_label">Sektor</label>
+			<label index="category_label">Kategoria</label>
+			<label index="discipline_label">Zawód</label>
+			<label index="education_label">Wykształcenie</label>
+			<label index="keyword_label">Słowa kluczowe</label>
+			<label index="search_label">Szukaj</label>
+			<label index="reset_label">Resetuj</label>
+			<label index="backtojob">Wróć do szczegółów oferty</label>
+			<label index="backtolist">Wróć do listy ofert</label>
+			<label index="job_not_found">Ta oferta nie istnieje lub straciła swoją aktualność</label>
+			<label index="wrong_display_code">Błąd: kod nie został ustawiony lub ustawiono go na: &quot;nie istniejący&quot;</label>
+			<label index="template_not_found">Błąd: plik z szablonem nie został odnaleziony</label>
+			<label index="form_select_text">-----</label>
+			<label index="link_prev">poprzenia</label>
+			<label index="link_next">następna</label>
+			<label index="pagebrowser_header">Oferty ###PAGE_FROM### do ###PAGE_TO### z ###TOTAL_JOBS###</label>
+			<label index="mail_from_name">Aplikacja na stanowisko pracy</label>
+			<label index="apply_missing_fields">Jedno lub więcej pól wymagalnych jest nieuzupełnione:</label>
+			<label index="contact_name_label">Nazwisko</label>
+			<label index="contact_address_label">Adres</label>
+			<label index="contact_phone_label">Telefon</label>
+			<label index="contact_email_label">E-mail</label>
+		</languageKey>
 	</data>
 </T3locallang>
