@@ -52,6 +52,10 @@
 			<label index='pagebrowser_header'>Jobs ###PAGE_FROM### to ###PAGE_TO### of ###TOTAL_JOBS###</label>
 			<label index='mail_from_name'>JobControl job application</label>
 			<label index='apply_missing_fields'>One or more required fields are missing:</label>
+			<label index='contact_name_label'>Contact name</label>
+			<label index='contact_address_label'>Contact address</label>
+			<label index='contact_phone_label'>Contact phone</label>
+			<label index='contact_email_label'>Contact email</label>
 		</languageKey>
 		<languageKey index='nl' type='array'>
 			<label index='no_jobs_found'>Er zijn geen vacatures gevonden</label>
@@ -100,6 +104,10 @@
 			<label index='pagebrowser_header'>Vacatures ###PAGE_FROM### t/m ###PAGE_TO### van ###TOTAL_JOBS###</label>
 			<label index='mail_from_name'>JobControl vacature sollicitatie</label>
 			<label index='apply_missing_fields'>Een of meerdere verplichte velden zijn niet ingevuld:</label>
+			<label index='contact_name_label'>Contactpersoon</label>
+			<label index='contact_address_label'>Adres</label>
+			<label index='contact_phone_label'>Telefoon</label>
+			<label index='contact_email_label'>Email</label>
 		</languageKey>
 		<languageKey index='de' type='array'>
 			<label index='no_jobs_found'>No jobs were found</label>
@@ -148,6 +156,10 @@
 			<label index='pagebrowser_header'>Stellenanzeigen ###PAGE_FROM### bis ###PAGE_TO### von ###TOTAL_JOBS###</label>
 			<label index='mail_from_name'>JobControl job application</label>
 			<label index='apply_missing_fields'>One or more required fields are missing:</label>
+			<label index='contact_name_label'>Contact name</label>
+			<label index='contact_address_label'>Contact address</label>
+			<label index='contact_phone_label'>Contact phone</label>
+			<label index='contact_email_label'>Contact email</label>
 		</languageKey>
 		<languageKey index='ru' type='array'>
 			<label index='no_jobs_found'>No jobs were found</label>
@@ -196,6 +208,10 @@
 			<label index='pagebrowser_header'>Вакансии с ###PAGE_FROM### по ###PAGE_TO### из ###TOTAL_JOBS###</label>
 			<label index='mail_from_name'>JobControl job application</label>
 			<label index='apply_missing_fields'>One or more required fields are missing:</label>
+			<label index='contact_name_label'>Contact name</label>
+			<label index='contact_address_label'>Contact address</label>
+			<label index='contact_phone_label'>Contact phone</label>
+			<label index='contact_email_label'>Contact email</label>
 		</languageKey>
 	</data>
 </T3locallang>

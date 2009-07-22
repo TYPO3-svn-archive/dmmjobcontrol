@@ -29,7 +29,7 @@ require_once(t3lib_extMgm::extPath('lang').'lang.php');
 /**
  * Plugin 'JobControl' for the 'dmmjobcontrol' extension.
  *
- * @author Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
+ * @author Kevin Renskers [DMM Development] <kevin@dmmw.nl>
  * @coauthor Björn Reichert [Sylphen GmbH & Co. KG] <breichert@sylphen.com>
  * @package TYPO3
  * @subpackage tx_dmmjobcontrol
@@ -655,7 +655,11 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 			'CV_LABEL',
 			'LETTER_LABEL',
 			'APPLY_LINK',
-			'APPLY_THANKS'
+			'APPLY_THANKS',
+			'CONTACT_NAME_LABEL',
+			'CONTACT_ADDRESS_LABEL',
+			'CONTACT_PHONE_LABEL',
+			'CONTACT_EMAIL_LABEL'
 		);
 
 		// Extend $labelMarkers with user function?
@@ -961,6 +965,14 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		}
 		$markerArray['###EDUCATION###'] = $this->cObj->stdWrap(implode(', ', $array), $this->conf['education_stdWrap.']);
 
+		// Get contact info
+		$resMM = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tx_dmmjobcontrol_contact.*', 'tx_dmmjobcontrol_contact', 'tx_dmmjobcontrol_contact.uid='.$row['contact']);
+		if ($rowMM = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resMM)) {
+			foreach (array('name','address','phone','email') as $f) {
+				$markerArray['###'.strtoupper('contact_'.$f).'###'] = $this->cObj->stdWrap($rowMM[$f], $this->conf['contact_'.$f.'_stdWrap.']);
+			}
+		}
+		
 		return $markerArray;
 	}
 

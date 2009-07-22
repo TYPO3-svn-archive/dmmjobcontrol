@@ -1,3 +1,8 @@
+2008-12-11 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
+	* Version 2.2.1
+	* Feature: the details of the contact person can now be shown in your own template (thanks Michiel van Leening)
+	  The following new markers are available: CONTACT_NAME, CONTACT_ADDRESS, CONTACT_PHONE CONTACT_EMAIL
+
 2008-11-27 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
 	* Version 2.2.0
 	* Feature: details of logged in FE user get prefilled in the apply form

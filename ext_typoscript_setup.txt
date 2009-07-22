@@ -52,4 +52,5 @@ plugin.tx_dmmjobcontrol_pi1 {
 	apply_information_stdWrap < .general_stdWrap
 	salary_stdWrap < .general_stdWrap
 	apply_required_stdWrap.wrap = |<span class="dmmjobcontrol_apply_required">*</span>
+	contact_address_stdWrap.br = 1
 }
