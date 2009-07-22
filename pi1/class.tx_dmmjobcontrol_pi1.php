@@ -249,8 +249,18 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 						$tableAdd[] = $table;
 						$whereAdd[] = $table.'.uid_local=tx_dmmjobcontrol_job.uid AND '.$table.'.uid_foreign='.$value;
 					} elseif ($field == 'keyword') {
-						$selectAdd[] = 'tx_dmmjobcontrol_job.job_title AS job_title';
-						$whereAdd[] = '((job_title LIKE "%'.addslashes($value).'%") OR (job_description LIKE "%'.addslashes($value).'%") OR (job_requirements LIKE "%'.addslashes($value).'%"))';
+						$keywords = str_replace(array(','), ' ', $value);
+						$keywords = explode(' ', $keywords);
+
+						foreach ($keywords as $keyword) {
+							$keyword = addslashes($keyword);
+
+							$whereAdd[] = '(tx_dmmjobcontrol_job.job_title LIKE "%'.$keyword.'%" OR '.
+							'tx_dmmjobcontrol_job.job_description LIKE "%'.$keyword.'%" OR '.
+							'tx_dmmjobcontrol_job.location LIKE "%'.$keyword.'%" OR '.
+							'tx_dmmjobcontrol_job.reference LIKE "%'.$keyword.'%" OR '.
+							'tx_dmmjobcontrol_job.job_requirements LIKE "%'.$keyword.'%")';
+						}
 					} elseif (isset($TCA['tx_dmmjobcontrol_job']['columns'][$field])) {
 						$selectAdd[] = 'tx_dmmjobcontrol_job.'.$field.' AS '.$field;
 						$whereAdd[] = $GLOBALS['TYPO3_DB']->listQuery($field, $value, 'tx_dmmjobcontrol_job');
@@ -305,8 +315,10 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 			$i++;
 		}
 
+		$enablePageBrowser = true;
 		if (!$content) {
 			$content = $this->pi_getLL('no_jobs_found');
+			$enablePageBrowser = false;
 		}
 
 		$markerArray = $this->getLabels();
@@ -315,7 +327,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$wrappedMarkerArray['###RSS_IMAGE_TEMPLATE###'] = '';
 
 		// Paged lists (not for rss feeds)
-		if (!$this->rssMode && isset($this->conf['paged']) && $this->conf['paged'] && isset($this->conf['limit']) && $this->conf['limit']) {
+		if ($enablePageBrowser && !$this->rssMode && isset($this->conf['paged']) && $this->conf['paged'] && isset($this->conf['limit']) && $this->conf['limit']) {
 			$template['pagebrowser'] = $this->cObj->getSubpart($template['total'], '###PAGEBROWSER###');
 			$wrappedMarkerArray['###PAGEBROWSER###'] = $this->getPageBrowser($template['pagebrowser'], $tableAdd, $whereAdd);
 		}
@@ -833,26 +845,39 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 	 */
 	function getJobData($row) {
 		$markerArray = array(
-			'###UID###' => $this->cObj->stdWrap($row['uid'], $this->conf['uid_stdWrap.']),
-			'###CRDATE###' => $this->cObj->stdWrap($row['crdate'], $this->conf['crdate_stdWrap.']),
 			'###REFERENCE###' => $this->cObj->stdWrap($row['reference'], $this->conf['reference_stdWrap.']),
 			'###JOB_TITLE###' => $this->cObj->stdWrap($row['job_title'], $this->conf['job_title_stdWrap.']),
-			'###EMPLOYER###' => $this->cObj->stdWrap($row['employer'], $this->conf['employer_stdWrap.']),
-			'###EMPLOYER_DESCRIPTION###' => $this->cObj->stdWrap($row['employer_description'], $this->conf['employer_description_stdWrap.']),
 			'###LOCATION###' => $this->cObj->stdWrap($row['location'], $this->conf['location_stdWrap.']),
-			'###SHORT_JOB_DESCRIPTION###' => $this->cObj->stdWrap($row['short_job_description'], $this->conf['short_job_description_stdWrap.']),
 			'###JOB_DESCRIPTION###' => $this->cObj->stdWrap($row['job_description'], $this->conf['job_description_stdWrap.']),
-			'###EXPERIENCE###' => $this->cObj->stdWrap($row['experience'], $this->conf['experience_stdWrap.']),
 			'###JOB_REQUIREMENTS###' => $this->cObj->stdWrap($row['job_requirements'], $this->conf['job_requirements_stdWrap.']),
-			'###JOB_BENEFITS###' => $this->cObj->stdWrap($row['job_benefits'], $this->conf['job_benefits_stdWrap.']),
-			'###APPLY_INFORMATION###' => $this->cObj->stdWrap($row['apply_information'], $this->conf['apply_information_stdWrap.']),
-			'###SALARY###' => $this->cObj->stdWrap($row['salary'], $this->conf['salary_stdWrap.']),
-			'###LINKTODETAIL###' => $GLOBALS['TSFE']->baseUrlWrap($this->cObj->getTypoLink_URL($this->conf['pid.']['detail'] ? $this->conf['pid.']['detail'] : $GLOBALS['TSFE']->id, array( 'tx_dmmjobcontrol_pi1[job_uid]' => $row['uid'] ))),
-			'###LINKTOAPPLY###' => $GLOBALS['TSFE']->baseUrlWrap($this->cObj->getTypoLink_URL($this->conf['pid.']['apply'] ? $this->conf['pid.']['apply'] : $GLOBALS['TSFE']->id, array( 'tx_dmmjobcontrol_pi1[job_uid]' => $row['uid'] ))),
-			'###LINKTOLIST###' => $GLOBALS['TSFE']->baseUrlWrap($this->cObj->getTypoLink_URL($this->conf['pid.']['list'] ? $this->conf['pid.']['list'] : $GLOBALS['TSFE']->id)),
-			'###JOB_TYPE###' => $this->cObj->stdWrap($this->lang->getLL('tx_dmmjobcontrol_job.job_type.I.'.$row['job_type']), $this->conf['job_type_stdWrap.']),
-			'###CONTRACT_TYPE###' => $this->cObj->stdWrap($this->lang->getLL('tx_dmmjobcontrol_job.contract_type.I.'.$row['contract_type']), $this->conf['contract_type_stdWrap.']),
 		);
+
+		if (!$this->rssMode && !$this->conf['ignore_search']) {
+			$session = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->prefixId);
+			if (isset($session['search']['keyword']) && $search = $session['search']['keyword']) {
+				$keywords = str_replace(array(','), ' ', $search);
+				$keywords = explode(' ', $keywords);
+
+				foreach ($markerArray AS $key => $value) {
+					$markerArray[$key] = preg_replace('/('.implode('|', $keywords).')/i', '<span class="dmmjobcontrol_highlight">$1</span>', $value);
+				}
+			}
+		}
+
+		$markerArray['###UID###'] = $this->cObj->stdWrap($row['uid'], $this->conf['uid_stdWrap.']);
+		$markerArray['###CRDATE###'] = $this->cObj->stdWrap($row['crdate'], $this->conf['crdate_stdWrap.']);
+		$markerArray['###EMPLOYER###'] = $this->cObj->stdWrap($row['employer'], $this->conf['employer_stdWrap.']);
+		$markerArray['###EMPLOYER_DESCRIPTION###'] = $this->cObj->stdWrap($row['employer_description'], $this->conf['employer_description_stdWrap.']);
+		$markerArray['###SHORT_JOB_DESCRIPTION###'] = $this->cObj->stdWrap($row['short_job_description'], $this->conf['short_job_description_stdWrap.']);
+		$markerArray['###EXPERIENCE###'] = $this->cObj->stdWrap($row['experience'], $this->conf['experience_stdWrap.']);
+		$markerArray['###JOB_BENEFITS###'] = $this->cObj->stdWrap($row['job_benefits'], $this->conf['job_benefits_stdWrap.']);
+		$markerArray['###APPLY_INFORMATION###'] = $this->cObj->stdWrap($row['apply_information'], $this->conf['apply_information_stdWrap.']);
+		$markerArray['###SALARY###'] = $this->cObj->stdWrap($row['salary'], $this->conf['salary_stdWrap.']);
+		$markerArray['###LINKTODETAIL###'] = $GLOBALS['TSFE']->baseUrlWrap($this->cObj->getTypoLink_URL($this->conf['pid.']['detail'] ? $this->conf['pid.']['detail'] : $GLOBALS['TSFE']->id, array( 'tx_dmmjobcontrol_pi1[job_uid]' => $row['uid'] )));
+		$markerArray['###LINKTOAPPLY###'] = $GLOBALS['TSFE']->baseUrlWrap($this->cObj->getTypoLink_URL($this->conf['pid.']['apply'] ? $this->conf['pid.']['apply'] : $GLOBALS['TSFE']->id, array( 'tx_dmmjobcontrol_pi1[job_uid]' => $row['uid'] )));
+		$markerArray['###LINKTOLIST###'] = $GLOBALS['TSFE']->baseUrlWrap($this->cObj->getTypoLink_URL($this->conf['pid.']['list'] ? $this->conf['pid.']['list'] : $GLOBALS['TSFE']->id));
+		$markerArray['###JOB_TYPE###'] = $this->cObj->stdWrap($this->lang->getLL('tx_dmmjobcontrol_job.job_type.I.'.$row['job_type']), $this->conf['job_type_stdWrap.']);
+		$markerArray['###CONTRACT_TYPE###'] = $this->cObj->stdWrap($this->lang->getLL('tx_dmmjobcontrol_job.contract_type.I.'.$row['contract_type']), $this->conf['contract_type_stdWrap.']);
 
 		// Extend the markerArray with user function?
 		if (isset($this->conf['markerArrayFunction']) && $this->conf['markerArrayFunction']) {

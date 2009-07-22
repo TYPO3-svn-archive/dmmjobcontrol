@@ -1,5 +1,13 @@
+2008-11-10 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
+	* Version 2.1.0
+	* Feature: highlight keywords in results (list- and detailview)
+	* Feature: searching for multiple keywords (AND)
+	* Feature: keywords now search the job location and reference number too
+	* Bugfix: when no jobs are found, the pagebrowser is not shown anymore
+	* Bugfix: pressing enter to submit the searchform now works in Internet Explorer too
+
 2008-11-04 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
-	* Version 1.15.7
+	* Version 2.0.0
 	* Feature: a new option "ignore_search" has been added, handy for lists that show the latest jobs (thanks Jan Wolters)
 	* Bugfix: the hideEmpty change by Marcel had a small bug, causing "0" values to be considered empty
 
