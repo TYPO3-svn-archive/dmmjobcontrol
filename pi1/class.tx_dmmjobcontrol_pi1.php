@@ -239,8 +239,8 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		}
 
 		// If there is a search-session, then extend the query arrays to make the search (but not for rss feeds of course)
-		if (!$this->rssMode) {
-			$session = $GLOBALS['TSFE']->fe_user->getKey('ses',$this->prefixId);
+		if (!$this->rssMode && !$this->conf['ignore_search']) {
+			$session = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->prefixId);
 			if (isset($session['search']) && $search = $session['search']) {
 				global $TCA;
 				foreach ($search AS $field => $value) {
@@ -1055,8 +1055,8 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 				$fieldName = implode('_', $fieldName_parts);
 				$rowFieldName = strtolower($fieldName);
 
-				// if it is empty fill label with a space
-				if (empty($row[$rowFieldName])) {
+				// If it is empty fill label with a space
+				if (!strlen($row[$rowFieldName])) {
 					$labels[$k] = ' ';
 					$values['###'.$fieldName.'###'] = '';
 				}

@@ -1,3 +1,8 @@
+2008-11-04 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
+	* Version 1.15.7
+	* Feature: a new option "ignore_search" has been added, handy for lists that show the latest jobs (thanks Jan Wolters)
+	* Bugfix: the hideEmpty change by Marcel had a small bug, causing "0" values to be considered empty
+
 2008-10-30 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
 	* Version 1.15.6
 	* Feature: a message will now be shown when no jobs are found (thanks Jan Wolters)
