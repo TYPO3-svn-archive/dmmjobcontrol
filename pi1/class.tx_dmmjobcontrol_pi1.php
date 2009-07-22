@@ -332,7 +332,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 	function displayDetail($applyOnly = false) {
 		if (isset($this->piVars['ref']) && $this->piVars['ref']) {
 			// Find the job_uid by searching the refence number
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_dmmjobcontrol_job', 'reference='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['ref'], 'tx_dmmjobcontrol_job'));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'tx_dmmjobcontrol_job', 'reference='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['ref'], 'tx_dmmjobcontrol_job').' AND '.$this->whereAdd);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$this->piVars['job_uid'] = $row['uid'];
 			}

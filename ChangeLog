@@ -1,3 +1,7 @@
+2009-06-04 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
+	* Version 2.3.5
+	* Bugfix: the function that finds the job_uid by searching the refence number has been fixed so that the right where's are being used in the query.
+
 2009-05-28 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 	* Version 2.3.4
 	* Minor updates to the documentation
