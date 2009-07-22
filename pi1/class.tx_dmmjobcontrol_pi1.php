@@ -121,6 +121,10 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 				}
 			}
 			$GLOBALS['TSFE']->fe_user->setKey('ses', $this->prefixId, $searchArray);
+			
+			// Redirect to the list page to solve the expired page problem
+			$listurl = $this->cObj->getTypoLink_URL($this->conf['pid.']['list'] ? $this->conf['pid.']['list'] : $GLOBALS['TSFE']->id);
+			header('Location: /'.$listurl);
 		}
 
 		// Reset the search

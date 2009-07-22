@@ -1,3 +1,7 @@
+2009-03-24 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
+	* Version 2.3.2
+	* Bugfix: after doing a search, do a redirect to solve the expired page problem.
+
 2009-01-29 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 	* Version 2.3.1
 	* Bugfix: in rare situations, the selectboxes on the searchform could be empty (thanks Gaylord Grštzinger)
