@@ -110,18 +110,18 @@
 			<label index='contact_email_label'>Email</label>
 		</languageKey>
 		<languageKey index='de' type='array'>
-			<label index='no_jobs_found'>No jobs were found</label>
+			<label index='no_jobs_found'>Es wurden keine Job-Angebote gefunden</label>
 			<label index='apply_header'>Zur Online-Bewerbung bitte Formular ausf&amp;uuml;llen</label>
 			<label index='apply_label'>Bewerben</label>
 			<label index='apply_link'>Online Bewerben</label>
 			<label index='fullname_label'>Ihr Name</label>
-			<label index='email_label'>Ihre Email</label>
+			<label index='email_label'>Ihre E-Mail</label>
 			<label index='motivation_label'>Motivation</label>
 			<label index='apply_email_subject'>Bewerbung: </label>
-			<label index='apply_thanks'>Danke f&amp;uuml;r Ihre Bewerbung. Wir antworten so schnell wie m&amp;ouml;glich.</label>
-			<label index='wrong_document_type'>Diese Datei ist nicht erlaubt. Sie können nur Textdateien mitsenden.</label>
+			<label index='apply_thanks'>Danke f&amp;uuml;r Ihre Bewerbung. Wir melden uns umgehend bei Ihnen.</label>
+			<label index='wrong_document_type'>Dieses Dateiformat wird nicht unterst&amp;uuml;tzt! Sie k&amp;ouml;nnen nur Textdateien mitsenden.</label>
 			<label index='cv_label'>Ihren Lebenslauf mitsenden</label>
-			<label index='letter_label'>Upload your letter</label>
+			<label index='letter_label'>Ihr Schreiben mitsenden</label>
 			<label index='crdate_label'>Eingestellt am</label>
 			<label index='reference_label'>Kennziffer</label>
 			<label index='job_title_label'>Stellenbeschreibung</label>
@@ -132,8 +132,8 @@
 			<label index='job_description_label'>Stellenbeschreibung</label>
 			<label index='experience_label'>Fachkenntnisse</label>
 			<label index='job_requirements_label'>Stellenanforderung</label>
-			<label index='job_benefits_label'>Job benefits</label>
-			<label index='apply_information_label'>Apply information</label>
+			<label index='job_benefits_label'>Ihre Vorteile</label>
+			<label index='apply_information_label'>Bewerbungsinformationen</label>
 			<label index='salary_label'>Verg&amp;uuml;tung</label>
 			<label index='job_type_label'>Besch&amp;auml;ftigungsart</label>
 			<label index='contract_type_label'>Vertragsart</label>
@@ -154,12 +154,12 @@
 			<label index='link_prev'>vorherige Seite</label>
 			<label index='link_next'>folgende Seite</label>
 			<label index='pagebrowser_header'>Stellenanzeigen ###PAGE_FROM### bis ###PAGE_TO### von ###TOTAL_JOBS###</label>
-			<label index='mail_from_name'>JobControl job application</label>
-			<label index='apply_missing_fields'>One or more required fields are missing:</label>
-			<label index='contact_name_label'>Contact name</label>
-			<label index='contact_address_label'>Contact address</label>
-			<label index='contact_phone_label'>Contact phone</label>
-			<label index='contact_email_label'>Contact email</label>
+			<label index='mail_from_name'>JobControl Bewerbung</label>
+			<label index='apply_missing_fields'>Eines oder mehrere Felder wurde(n) noch nicht ausgef&amp;uuml;llt</label>
+			<label index='contact_name_label'>Kontaktname</label>
+			<label index='contact_address_label'>Kontaktadresse</label>
+			<label index='contact_phone_label'>Telefon</label>
+			<label index='contact_email_label'>E-Mail</label>
 		</languageKey>
 		<languageKey index='ru' type='array'>
 			<label index='no_jobs_found'>No jobs were found</label>
