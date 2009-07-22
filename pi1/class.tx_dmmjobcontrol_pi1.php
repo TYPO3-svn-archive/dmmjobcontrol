@@ -391,6 +391,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 					// Get the appy templates
 					$this->templateCode = $this->cObj->fileResource($this->conf['template.']['apply']);
 					if (is_null($this->templateCode)) {
+
 						return $this->pi_getLL('template_not_found');
 					}
 
@@ -774,6 +775,8 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 
 		$markerArray['###FULLNAME_NAME###'] = 'tx_dmmjobcontrol_pi1[apply][fullname]';
 		$markerArray['###EMAIL_NAME###'] = 'tx_dmmjobcontrol_pi1[apply][email]';
+		$markerArray['###FULLNAME_VALUE###'] = '';
+		$markerArray['###EMAIL_VALUE###'] = '';
 		$markerArray['###MOTIVATION_NAME###'] = 'tx_dmmjobcontrol_pi1[apply][motivation]';
 		$markerArray['###CV_NAME###'] = 'tx_dmmjobcontrol_pi1[apply][cv]';
 		$markerArray['###LETTER_NAME###'] = 'tx_dmmjobcontrol_pi1[apply][letter]';
@@ -783,6 +786,12 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$markerArray['###JOB_UID###'] = $this->piVars['job_uid']; // backward compat.
 		$markerArray['###SPAMBLOCK_NAME###'] = 'tx_dmmjobcontrol_pi1[sessioncheck]';
 		$markerArray['###SPAMBLOCK_VALUE###'] = $spamBlockValue;
+
+		// Logged in FE user?
+		if ($GLOBALS["TSFE"]->loginUser) {
+			$markerArray['###FULLNAME_VALUE###'] = $GLOBALS['TSFE']->fe_user->user['name'];
+			$markerArray['###EMAIL_VALUE###'] = $GLOBALS['TSFE']->fe_user->user['email'];
+		}
 
 		return $this->cObj->substituteMarkerArrayCached($template, $markerArray);
 	}

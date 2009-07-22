@@ -1,3 +1,7 @@
+2008-11-27 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
+	* Version 2.2.0
+	* Feature: details of logged in FE user get prefilled in the apply form
+
 2008-11-10 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
 	* Version 2.1.0
 	* Feature: highlight keywords in results (list- and detailview)
