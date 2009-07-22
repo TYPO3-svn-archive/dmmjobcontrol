@@ -39,7 +39,6 @@ plugin.tx_dmmjobcontrol_pi1 {
 	sort = {$plugin.dmmjobcontrol.sort}
 	ignore_search = {$plugin.dmmjobcontrol.ignore_search}
 
-	sys_language_mode = {$plugin.dmmjobcontrol.sys_language_mode}
 	show_icon = {$plugin.dmmjobcontrol.show_icon}
 	hide_empty = {$plugin.dmmjobcontrol.hide_empty}
 

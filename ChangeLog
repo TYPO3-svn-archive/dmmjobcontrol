@@ -1,3 +1,10 @@
+2009-04-29 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
+	* Version 2.3.3
+	* Feature: added Danish translation (thanks Jesper Goos)
+	* Change: the multilingual features have been greatly simplified. JobControl will only show jobs in the current language,
+	  no more fall-back to default language if no translation has been entered, etc.
+	* Bugfix: searching for jobs in multilingual sites should work as expected now.
+	
 2009-03-24 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 	* Version 2.3.2
 	* Bugfix: after doing a search, do a redirect to solve the expired page problem.
@@ -164,7 +171,7 @@
 2007-09-03 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 	* Version 1.8.1
 	* Feature: load sysfolders with jobs recursively (thanks Rob)
-	* Bugfix: when there is only one page in the pagebrowser, don't show links anymore
+	* Change: when there is only one page in the pagebrowser, don't show links anymore
 
 2007-09-03 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 	* Version 1.8

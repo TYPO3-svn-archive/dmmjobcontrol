@@ -265,5 +265,57 @@
 			<label index="contact_phone_label">Telefon</label>
 			<label index="contact_email_label">E-mail</label>
 		</languageKey>
+		<languageKey index='dk' type='array'>
+			<label index='no_jobs_found'>Der blev ikke fundet nogen jobs</label>
+			<label index='apply_header'>Udfyld formularen for at søge om jobbet direkte</label>
+			<label index='apply_label'>Søg</label>
+			<label index='apply_link'>Søg direkte</label>
+			<label index='fullname_label'>Dit navn</label>
+			<label index='email_label'>Din emailadresse</label>
+			<label index='motivation_label'>Motivation</label>
+			<label index='apply_email_subject'>Din ansøgning for jobbet: </label>
+			<label index='apply_thanks'>Tak for din ansøgning. Du vil blive kontaktet så hurtigt som muligt.</label>
+			<label index='wrong_document_type'>Denne fil er ikke tilladt. Du kan kun uploade tekstfiler.</label>
+			<label index='cv_label'>Upload dit C.V.</label>
+			<label index='letter_label'>Upload din ansøgning</label>
+			<label index='crdate_label'>Oprettet den</label>
+			<label index='reference_label'>Referance nummer</label>
+			<label index='job_title_label'>Job titel</label>
+			<label index='employer_label'>Arbejdsgiver</label>
+			<label index='employer_description_label'>Beskrivelse af arbejdsgiver</label>
+			<label index='location_label'>Region</label>
+			<label index='short_job_description_label'>Kort beskrivelse af jobbet</label>
+			<label index='job_description_label'>Beskrivelse af jobbet</label>
+			<label index='experience_label'>Erfaring</label>
+			<label index='job_requirements_label'>Krav til ansøgeren</label>
+			<label index='job_benefits_label'>Job goder</label>
+			<label index='apply_information_label'>Ansøgnings informationer</label>
+			<label index='salary_label'>Løn</label>
+			<label index='job_type_label'>Job type</label>
+			<label index='contract_type_label'>Kontrakt type</label>
+			<label index='region_label'>Sted</label>
+			<label index='sector_label'>Sektor</label>
+			<label index='category_label'>Kategori</label>
+			<label index='discipline_label'>Disciplin</label>
+			<label index='education_label'>Uddannelsesniveau</label>
+			<label index='keyword_label'>Nøgleord</label>
+			<label index='search_label'>Søg</label>
+			<label index='reset_label'>Nulstil</label>
+			<label index='backtojob'>Tilbage til jobvisningen</label>
+			<label index='backtolist'>Tilbage til joblisten</label>
+			<label index='job_not_found'>Dette job eksisterer ikke, eller er blevet fjernet.</label>
+			<label index='wrong_display_code'>Fejl: display code er ikke blevet sat, eller  er forkert.</label>
+			<label index='template_not_found'>Fejl: template-filen kunne ikke findes.</label>
+			<label index='form_select_text'>------</label>
+			<label index='link_prev'>Forrige side</label>
+			<label index='link_next'>Næste side</label>
+			<label index='pagebrowser_header'>Jobs ###PAGE_FROM### til ###PAGE_TO### af ###TOTAL_JOBS###</label>
+			<label index='mail_from_name'>JobControl: Job ansøgning</label>
+			<label index='apply_missing_fields'>Et eller flere felter der skal udfyldes mangler:</label>
+			<label index='contact_name_label'>Kontakt navn</label>
+			<label index='contact_address_label'>Kontakt adresse</label>
+			<label index='contact_phone_label'>Kontakt telefon</label>
+			<label index='contact_email_label'>Kontakt email</label>
+		</languageKey>
 	</data>
 </T3locallang>

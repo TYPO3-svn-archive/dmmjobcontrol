@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2007 Kevin Renskers [DMM Development] <kevin@dauphin-mm.nl>
+*  (c) 2007-2009 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -30,7 +30,6 @@ require_once(t3lib_extMgm::extPath('lang').'lang.php');
  * Plugin 'JobControl' for the 'dmmjobcontrol' extension.
  *
  * @author Kevin Renskers [DMM Development] <kevin@dmmw.nl>
- * @coauthor Björn Reichert [Sylphen GmbH & Co. KG] <breichert@sylphen.com>
  * @package TYPO3
  * @subpackage tx_dmmjobcontrol
  */
@@ -87,11 +86,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 			$this->startpoint = $GLOBALS['TSFE']->id;
 		}
 
-		// sys_language_mode defines what to do if the requested translation is not found.
-		// It will either just show all jobs, even is their is no translation for the current language,
-		// or it will ONLY show jobs that are translated into the current language (default).
-		$this->sys_language_mode = $this->conf['sys_language_mode'] ? $this->conf['sys_language_mode'] : $GLOBALS['TSFE']->sys_language_mode;
-
 		// Recursively find all storage pages
 		$this->recursive = 0;
 		if (isset($this->cObj->data['recursive']) && $this->cObj->data['recursive']) {
@@ -106,7 +100,8 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		}
 
 		// Default whereadd statement added to all queries, so we don't show hidden or deleted jobs, or jobs that can't be shown yet/anymore
-		$this->whereAdd = 'tx_dmmjobcontrol_job.pid IN ('.implode(',', $this->sysfolders).') AND tx_dmmjobcontrol_job.deleted=0 AND tx_dmmjobcontrol_job.hidden=0 AND tx_dmmjobcontrol_job.starttime<='.time().' AND (tx_dmmjobcontrol_job.endtime=0 OR tx_dmmjobcontrol_job.endtime>'.time().')';
+		$this->whereAdd  = 'tx_dmmjobcontrol_job.pid IN ('.implode(',', $this->sysfolders).') AND tx_dmmjobcontrol_job.deleted=0 AND tx_dmmjobcontrol_job.hidden=0 AND tx_dmmjobcontrol_job.starttime<='.time().' AND (tx_dmmjobcontrol_job.endtime=0 OR tx_dmmjobcontrol_job.endtime>'.time().')';
+		$this->whereAdd .=' AND tx_dmmjobcontrol_job.sys_language_uid='.$GLOBALS['TSFE']->sys_language_content;
 
 		// "display" decides what is rendered: codes can be set by TS or FlexForm with priority on FlexForm
 		$displayCodesFlexForm = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'what_to_display', 'sDEF');
@@ -226,23 +221,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$selectAdd[] = 'tx_dmmjobcontrol_job.*';
 		$whereAdd[] = $this->whereAdd;
 
-		// Extra whereadd statement depending on localization
-		if ($this->sys_language_mode == 'strict' && $GLOBALS['TSFE']->sys_language_content) {
-			// sys_language_mode == 'strict': only get jobs entered in the default language *which have a translation *
-			$tmpres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('l18n_parent', 'tx_dmmjobcontrol_job', $this->whereAdd.' AND sys_language_uid='.$GLOBALS['TSFE']->sys_language_content);
-
-			$strictUids = array();
-			while ($tmprow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($tmpres)) {
-				$strictUids[] = $tmprow['l18n_parent'];
-			}
-
-			$strStrictUids = implode(',', $strictUids);
-			$whereAdd[] = '((tx_dmmjobcontrol_job.uid IN ('.($strStrictUids ? $strStrictUids : 0).') OR tx_dmmjobcontrol_job.sys_language_uid=-1))';
-		} else {
-			// sys_language_mode != 'strict': select all jobs from the default language (they will be translation if a translation exists) and all jobs which are entered in the requested language but which have no "parent" (ie they are not translations)
-			$whereAdd[] = '((tx_dmmjobcontrol_job.sys_language_uid IN (0,-1)) OR (tx_dmmjobcontrol_job.sys_language_uid='.$GLOBALS['TSFE']->sys_language_content.' AND tx_dmmjobcontrol_job.l18n_parent=0))';
-		}
-
 		// If there is a search-session, then extend the query arrays to make the search (but not for rss feeds of course)
 		if (!$this->rssMode && !$this->conf['ignore_search']) {
 			$session = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->prefixId);
@@ -309,12 +287,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$content = '';
 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			// Language overlay
-			if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
-				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-				$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dmmjobcontrol_job', $row, $GLOBALS['TSFE']->config['config']['sys_language_uid'], $OLmode);
-			}
-
 			$markerArray = $this->getJobData($row);
 
 			if ($i%2 && !$this->rssMode) {
@@ -322,6 +294,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 			} else {
 				$content .= $this->cObj->substituteMarkerArrayCached($template['row'], $markerArray);
 			}
+			
 			$i++;
 		}
 
@@ -368,12 +341,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		if (isset($this->piVars['job_uid']) && $this->piVars['job_uid']) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_dmmjobcontrol_job', 'uid='.$GLOBALS['TYPO3_DB']->fullQuoteStr($this->piVars['job_uid'], 'tx_dmmjobcontrol_job').' AND '.$this->whereAdd);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				// Language overlay
-				if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
-					$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-					$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dmmjobcontrol_job', $row, $GLOBALS['TSFE']->config['config']['sys_language_uid'], $OLmode);
-				}
-
 				// This sets the jobtitle as the page title (also for use in indexed search results)
 				if (isset($this->conf['substitutePageTitle']) && $this->conf['substitutePageTitle']) {
 					$GLOBALS['TSFE']->indexedDocTitle = $row['job_title'];
@@ -718,16 +685,25 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$markerArray['###JOB_TYPE_SELECT###'] = $this->getFormSelect('job_type');
 		$markerArray['###SEARCH_NAME###'] = 'tx_dmmjobcontrol_pi1[search_submit]';
 		$markerArray['###RESET_NAME###'] = 'tx_dmmjobcontrol_pi1[reset_submit]';
+		$markerArray['###FULLNAME_NAME###'] = 'tx_dmmjobcontrol_pi1[apply][fullname]';
+		$markerArray['###EMAIL_NAME###'] = 'tx_dmmjobcontrol_pi1[apply][email]';
+		$markerArray['###KEYWORD_NAME###'] = 'tx_dmmjobcontrol_pi1[search][keyword]';
+		$markerArray['###FULLNAME_VALUE###'] = '';
+		$markerArray['###EMAIL_VALUE###'] = '';
 
 		$session = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->prefixId);
 		$markerArray['###KEYWORD_VALUE###'] = $session['search']['keyword'];
-		$markerArray['###KEYWORD_NAME###'] = 'tx_dmmjobcontrol_pi1[search][keyword]';
+
+		// Logged in FE user?
+		if ($GLOBALS["TSFE"]->loginUser) {
+			$markerArray['###FULLNAME_VALUE###'] = $GLOBALS['TSFE']->fe_user->user['name'];
+			$markerArray['###EMAIL_VALUE###'] = $GLOBALS['TSFE']->fe_user->user['email'];
+		}
 
 		// Extend the markerArray with user function?
 		if (isset($this->conf['searchArrayFunction']) && $this->conf['searchArrayFunction']) {
 			$funcConf = $this->conf['searchArrayFunction.'];
 			$funcConf['parent'] = & $this;
-			$funcConf['row'] = $row;
 			$markerArray = $this->cObj->callUserFunction($this->conf['searchArrayFunction'], $funcConf, $markerArray);
 		}
 
@@ -822,13 +798,14 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 	 * Create a selectbox for a given field. The values come either from a seperate table or from the $TCA array.
 	 *
 	 * @param string $field	The field for which to create the selectbox
+	 * @param string $select Can be either "single" or "multiple"
 	 * @return string The html to be inserted into the form
 	 */
 	function getFormSelect($field) {
 		global $TCA;
 
 		$session = $GLOBALS['TSFE']->fe_user->getKey('ses', $this->prefixId);
-
+		
 		$return = '<select name="tx_dmmjobcontrol_pi1[search]['.$field.']" class="dmmjobcontrol_select dmmjobcontrol_'.$field.'">';
 		$return .= '<option value="-1">'.$this->pi_getLL('form_select_text').'</option>';
 
@@ -921,11 +898,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$resMM = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tx_dmmjobcontrol_region.*', '', 'tx_dmmjobcontrol_job_region_mm', 'tx_dmmjobcontrol_region', 'AND tx_dmmjobcontrol_job_region_mm.uid_local='.$row['uid']);
 		$array = array();
 		while($rowMM = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resMM)) {
-			// Overlay the right language version
-			if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
-				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-				$rowMM = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dmmjobcontrol_region', $rowMM, $GLOBALS['TSFE']->config['config']['sys_language_uid'], $OLmode);
-			}
 			$array[] = $rowMM['name'];
 		}
 		$markerArray['###REGION###'] = $this->cObj->stdWrap(implode(', ', $array), $this->conf['region_stdWrap.']);
@@ -934,11 +906,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$resMM = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tx_dmmjobcontrol_sector.*', '', 'tx_dmmjobcontrol_job_sector_mm', 'tx_dmmjobcontrol_sector', 'AND tx_dmmjobcontrol_job_sector_mm.uid_local='.$row['uid']);
 		$array = array();
 		while($rowMM = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resMM)) {
-			// Overlay the right language version
-			if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
-				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-				$rowMM = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dmmjobcontrol_sector', $rowMM, $GLOBALS['TSFE']->config['config']['sys_language_uid'], $OLmode);
-			}
 			$array[] = $rowMM['name'];
 		}
 		$markerArray['###SECTOR###'] = $this->cObj->stdWrap(implode(', ', $array), $this->conf['sector_stdWrap.']);
@@ -947,11 +914,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$resMM = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tx_dmmjobcontrol_category.*', '', 'tx_dmmjobcontrol_job_category_mm', 'tx_dmmjobcontrol_category', 'AND tx_dmmjobcontrol_job_category_mm.uid_local='.$row['uid']);
 		$array = array();
 		while($rowMM = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resMM)) {
-			// Overlay the right language version
-			if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
-				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-				$rowMM = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dmmjobcontrol_category', $rowMM, $GLOBALS['TSFE']->config['config']['sys_language_uid'], $OLmode);
-			}
 			$array[] = $rowMM['name'];
 		}
 		$markerArray['###CATEGORY###'] = $this->cObj->stdWrap(implode(', ', $array), $this->conf['category_stdWrap.']);
@@ -960,11 +922,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$resMM = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tx_dmmjobcontrol_discipline.*', '', 'tx_dmmjobcontrol_job_discipline_mm', 'tx_dmmjobcontrol_discipline', 'AND tx_dmmjobcontrol_job_discipline_mm.uid_local='.$row['uid']);
 		$array = array();
 		while($rowMM = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resMM)) {
-			// Overlay the right language version
-			if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
-				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-				$rowMM = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dmmjobcontrol_discipline', $rowMM, $GLOBALS['TSFE']->config['config']['sys_language_uid'], $OLmode);
-			}
 			$array[] = $rowMM['name'];
 		}
 		$markerArray['###DISCIPLINE###'] = $this->cObj->stdWrap(implode(', ', $array), $this->conf['discipline_stdWrap.']);
@@ -973,11 +930,6 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 		$resMM = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('tx_dmmjobcontrol_education.*', '', 'tx_dmmjobcontrol_job_education_mm', 'tx_dmmjobcontrol_education', 'AND tx_dmmjobcontrol_job_education_mm.uid_local='.$row['uid']);
 		$array = array();
 		while($rowMM = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resMM)) {
-			// Overlay the right language version
-			if ($GLOBALS['TSFE']->config['config']['sys_language_uid']) {
-				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
-				$rowMM = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dmmjobcontrol_education', $rowMM, $GLOBALS['TSFE']->config['config']['sys_language_uid'], $OLmode);
-			}
 			$array[] = $rowMM['name'];
 		}
 		$markerArray['###EDUCATION###'] = $this->cObj->stdWrap(implode(', ', $array), $this->conf['education_stdWrap.']);
@@ -1104,7 +1056,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 			'DISCIPLINE_LABEL',
 			'EDUCATION_LABEL',
 			'JOB_BENEFITS_LABEL',
-			'APPLY_INFORMATION_LABEL'
+			'APPLY_INFORMATION_LABEL',
 		);
 
 		foreach ($labels AS $k => $v) {
