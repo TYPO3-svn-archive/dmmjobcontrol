@@ -48,6 +48,9 @@ plugin.dmmjobcontrol {
 	# cat=plugin.tx_dmmjobcontrol_pi1//; type=int+; label= HtmlMail: Send html email with uploaded CV as attachment
 	htmlmail = 1
 
+	# cat=plugin.tx_dmmjobcontrol_pi1//; type=int+; label= wrap_in_base_class: Wrap the plugin in a div with a base class	
+	wrap_in_base_class = 1
+
 	# cat=plugin.tx_dmmjobcontrol_pi1//; type=int+; label= Recursive: Load sysfolders with jobs recursivly
 	recursive = 1
 

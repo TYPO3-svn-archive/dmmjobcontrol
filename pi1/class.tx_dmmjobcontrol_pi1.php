@@ -164,7 +164,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 			$content .= $this->displayHelp();
 		}
 
-		if ($this->rssMode) {
+		if ($this->rssMode || $this->conf['wrap_in_base_class'] == '0') {
 			return $content;
 		} else {
 			return $this->pi_wrapInBaseClass($content);
@@ -346,6 +346,7 @@ class tx_dmmjobcontrol_pi1 extends tslib_pibase {
 					$GLOBALS['TSFE']->indexedDocTitle = $row['job_title'];
 					$GLOBALS['TSFE']->page['title'] = $row['job_title'];
 					$this->cObj->LOAD_REGISTER(array('JOBTITLE' => $row['job_title']), '');
+					$this->cObj->LOAD_REGISTER(array('JOBLOCATION' => $row['location']), '');
 				}
 
 				// Which fields are required?

@@ -38,6 +38,7 @@ plugin.tx_dmmjobcontrol_pi1 {
 	paged = {$plugin.dmmjobcontrol.paged}
 	sort = {$plugin.dmmjobcontrol.sort}
 	ignore_search = {$plugin.dmmjobcontrol.ignore_search}
+	wrap_in_base_class = {$plugin.dmmjobcontrol.wrap_in_base_class}
 
 	show_icon = {$plugin.dmmjobcontrol.show_icon}
 	hide_empty = {$plugin.dmmjobcontrol.hide_empty}

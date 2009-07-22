@@ -1,3 +1,8 @@
+2009-06-26 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
+	* Version 2.3.7
+	* Feature: new typoscript config option: wrap_in_base_class (defaults to 1)
+	* Feature: added a new register variable called JOBLOCATION (works just like JOBTITLE)
+
 2009-06-24 Kevin Renskers [DMM Development] <kevin@dmmw.nl>
 	* Version 2.3.6
 	* Change: updated German translations (thanks Johannes Sauerbier)
